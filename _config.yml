@@ -1,24 +1,26 @@
 # Site settings
 title: 지돌스타의 소프트웨어 개발 즐기기
-url: "https://jidolstar.github.io"    # the protocol and hostname of your site, eg. `http://laobubu.github.io`
-baseurl: "" # the prefix of your site uri, eg. `"/jekyll-theme-EasyBook"` or empty string `""`
-#timezone: Asia/Seoul
+url: "https://jidolstar.github.io"
+baseurl: "" 
+timezone: Asia/Seoul
 description: >
   소프트웨어 개발에 대한 여러가지 지식을 정리하기 위해 만들었습니다.
 
 # Your information
-email: your_email@example.com
+email: jidolstar@gmail.com
 author: 지용호
 avatar: "//scontent-ssn1-1.xx.fbcdn.net/v/t1.0-9/83747704_10157150421133315_2327500957329391616_n.jpg?_nc_cat=111&_nc_oc=AQnoqA3b0QcOecPy-X7dePvZOYbmu3SpKA4q84yrl4GvClF0MceTzcpXNk1s73q3xag&_nc_ht=scontent-ssn1-1.xx&oh=51e418f7048bfffe8b280473dd49249b&oe=5EBE8E71"
-profile: 지돌스타의 소프트웨어 개발 넋두리
+profile: 지돌스타의 소프트웨어 개발 즐기기
 #twitter_username: twitter_username
 #github_username:  github_username
 profile_links:
+  Company: "https://bsidesoft.com"
   Email: "mailto:jidolstar@example.com"
   GitHub: "https://github.com/jidolstar"
+  
   # You can add more profile links above, or edit _includes/sidebar.html 
 
-# Comment Service (Disqus or 多说)
+# Comment Service 
 #  choose one and un-comment the line to active it
 #disqus_shortname: xxx   # get one: https://disqus.com/admin/signup/
 #duoshuo_shortname: xxx  # get one: http://duoshuo.com/create-site/
