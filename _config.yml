@@ -1,21 +1,21 @@
 # Site settings
-title: Another Blog
-url: "http://laobubu.github.io"    # the protocol and hostname of your site, eg. `http://laobubu.github.io`
-baseurl: "/jekyll-theme-EasyBook" # the prefix of your site uri, eg. `"/jekyll-theme-EasyBook"` or empty string `""`
-#timezone: Asia/Chongqing
+title: 지돌스타의 소프트웨어 개발 넋두리
+url: "https://jidolstar.github.io"    # the protocol and hostname of your site, eg. `http://laobubu.github.io`
+baseurl: "" # the prefix of your site uri, eg. `"/jekyll-theme-EasyBook"` or empty string `""`
+#timezone: Asia/Seoul
 description: >
-  One or more sentences introducing this blog.
+  소프트웨어 개발에 대한 여러가지 지식을 정리하기 위해 만들었습니다.
 
 # Your information
 email: your_email@example.com
-author: your_name
-avatar: "//www.gravatar.com/avatar/your_email_md5?d=mm&s=135"
-profile: One sentence introducing yourself.
+author: 지용호
+avatar: "//scontent-ssn1-1.xx.fbcdn.net/v/t1.0-9/83747704_10157150421133315_2327500957329391616_n.jpg?_nc_cat=111&_nc_oc=AQnoqA3b0QcOecPy-X7dePvZOYbmu3SpKA4q84yrl4GvClF0MceTzcpXNk1s73q3xag&_nc_ht=scontent-ssn1-1.xx&oh=51e418f7048bfffe8b280473dd49249b&oe=5EBE8E71"
+profile: 지돌스타의 소프트웨어 개발 넋두리
 #twitter_username: twitter_username
 #github_username:  github_username
 profile_links:
-  Email: "mailto:your_email@example.com"
-  GitHub: "https://github.com/laobubu/jekyll-theme-EasyBook"
+  Email: "mailto:jidolstar@example.com"
+  GitHub: "https://github.com/jidolstar"
   # You can add more profile links above, or edit _includes/sidebar.html 
 
 # Comment Service (Disqus or 多说)
@@ -29,7 +29,6 @@ header:
   links:             # Links on the header. Link to in-site page with a slash as prefix
     About: /about/
     Category: /category/
-    Donate: https://laobubu.net/donate.html
 
 permalink: /archivers/:title
 plugins:
@@ -44,7 +43,6 @@ paginate_path: "page:num"
 highlighter: rouge
 markdown: kramdown
 
-# https://jekyllrb.com/docs/configuration/#precedence
 defaults:
   -
     scope:
