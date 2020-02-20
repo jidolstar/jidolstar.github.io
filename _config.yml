@@ -14,9 +14,9 @@ profile: 지돌스타의 소프트웨어 개발 즐기기
 #twitter_username: twitter_username
 #github_username:  github_username
 profile_links:
-  Company: "https://bsidesoft.com"
+  BsideSoft: "https://www.bsidesoft.com"
   Email: "mailto:jidolstar@example.com"
-  GitHub: "https://github.com/jidolstar"
+  Youtube: "https://youtube.com/appafpv"
   
   # You can add more profile links above, or edit _includes/sidebar.html 
 
