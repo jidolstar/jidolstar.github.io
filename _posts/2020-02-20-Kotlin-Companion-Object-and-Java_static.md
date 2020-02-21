@@ -317,7 +317,7 @@ class MyClass4{
 왜 그럴까요????? `inner class`를 정확히 공부하면 이해가 될 순간이 올 것 같습니다. 
 
 
-## 상속 관계 클래스에서 부모 클래스의 Companion object는 가려집니다(쉐도잉, shadowing).
+## 부모 클래스의 Companion object는 가려집니다(쉐도잉, shadowing).
 
 기본적으로는 부모 클래스를 상속한 자식 클래스가 있다면 부모 클래스에 선언한 companion object는 자식 클래스에 선언한 companion object와 독립적입니다. 서로 연결고리는 없습니다. 아래 코드로 이해해 볼까요? 
 
@@ -347,11 +347,9 @@ fun main(args: Array<String>) {
 }
 ```
 
-위 코드를 자세히 보면 인스턴스 메소드를 보면 부모/자식 둘다 자신의 companion object의 prop의 값을 반환하고 있습니다. main함수에서 예상대로 결과가 나왔습니다. 
+위 코드를 자세히 보면 부모/자식 둘 다 자신의 companion object의 prop의 값을 반환하고 있습니다. main() 함수에서 예상대로 결과가 나왔습니다. 다만 조금 헷갈릴 수 있는 부분은 `Child().method0()`의 결과일 것입니다. `method0()` 메소드는 `Parent`클래스 것입니다. 그래서 부모의 companion object의 prop값인 "나는 부모"가 출력되었습니다.  
 
-다만 조금 흥미로운 부분은 `Child().method0()`의 결과입니다. `method0()` 메소드는 `Parent`클래스 것입니다. 그래서 부모의 companion object의 prop값인 "나는 부모"가 출력되었습니다. 
-
-아래 코드를 보겠습니다. 
+조금 난이도를 높여보겠습니다. 아래 코드를 보겠습니다. 
 
 ```kotlin
 open class Parent{
@@ -375,18 +373,18 @@ fun main(args: Array<String>) {
 }
 ```
 
-클래스 정의를 먼저 자세히 보면 `Parent`의 `method()` 메소드가 open이고 `Child`에서 이를 override했습니다. `main()`함수에서 첫번째와 두번째 실행 결과는 쉽게 예측이 됩니다. 하지만 주석(1)의 결과는 무엇일까요? 분명 `Child`클래스의 객체를 생성했으나 `Parent` 부모로 형변환 했습니다. 그럼 이때 호출한 method() 결과는 대체 무엇인가요? 
+클래스 정의를 먼저 자세히 보면 `Parent`의 `method()` 메소드가 open이고 `Child`에서 이를 override했습니다. `main()`함수에서 첫번째와 두번째 실행 결과는 쉽게 예측이 됩니다. 하지만 주석(1)의 결과는 무엇일까요? 분명 `Child`클래스의 객체를 생성했으나 `Parent` 부모로 형변환 했습니다. 그럼 이때 호출한 method() 결과는 대체 무엇인가요? 부모형이니 "나는 부모"라고 출력할까요? 아니면 태생이 자식이니 "나는 자식"일까요? 
 
-이 문제는 compaion object문제가 아닙니다. 게다가 코틀린 문제도 아닙니다. 사실 이 문제는 객체지향언어서 약속한 **다형성(Polymorphism)**에 대한 질문입니다. 다형성은 두가지를 만족해야 합니다.
+이 문제는 compaion object문제가 아닙니다. 게다가 코틀린 문제도 아닙니다. 사실 이는 객체지향 언어에서 약속한 **다형성(Polymorphism)**에 대한 질문입니다. 다형성은 두가지를 만족해야 합니다.
 
-1. 대체가능성(substitution) – 어떤 형을 요구한다면 그 형의 자식형으로 그 자리를 대신할 수 있다.
-2. 내적동질성(internal identity) – 객체는 그 객체를 참조하는 방식에 따라 변화하지 않는다. 즉 업다운캐스팅해도 여전히 최초 생성한 그 객체라는 것입니다.
+1. **대체가능성(substitution)** – 어떤 형을 요구한다면 그 형의 자식형으로 그 자리를 대신할 수 있다.
+2. **내적동질성(internal identity)** – 객체는 그 객체를 참조하는 방식에 따라 변화하지 않는다. 즉 업다운캐스팅해도 여전히 최초 생성한 그 객체라는 것입니다.
 
-이 두가지 조건을 만족하면 다형성을 만족한다고 볼 수 있고 다형성을 만족하면 객체지향 언어라고 볼 수 있습니다. 다형성의 1번 조건인 대체가능성 때문에 `var c:Parent = Child()`를 할 수 있었던 것입니다. 그리고 내적동질성으로 인해 아무리 자식을 부모형으로 대체해도 자식은 자식이죠. 그래서 `p.method()`의 결과는 `Child().method()`결과와 같습니다. 그러므로 결과는 "나는 자식" 입니다.
+이 두가지 조건을 만족하면 다형성을 만족한다고 볼 수 있고 거꾸로 다형성을 만족하면 객체지향 언어라고 볼 수 있습니다. 다형성의 1번 조건인 대체가능성 때문에 `var c:Parent = Child()`를 할 수 있었던 것입니다. 그리고 내적동질성으로 인해 아무리 자식을 부모형으로 대체해도 자식은 자식이죠. 태어날 때의 본질은 어디 가지 않습니다! 그래서 `p.method()`의 결과는 `Child().method()`결과와 같습니다. 그러므로 결과는 "나는 자식" 입니다.
 
-갑자기 객체지향의 다형성... 딴 길로 흘렀습니다. 
+갑자기 왠~ 객체지향의 다형성... 딴 길로 흘렀습니다. 
 
-다른 재미있는 실험을 해봅니다. 자식의  companion object에 이름을 부여합니다. 
+다른 재미있는(?) 실험을 해봅니다. 여기서 진짜 알려드리고 싶은 내용입니다. 일단 자식의 companion object에 이름을 부여합니다. 
 
 ```kotlin
 open class Parent{
@@ -411,7 +409,7 @@ fun main(args: Array<String>) {
     println(child.method3()) // -- (2)
 ```
 
-위 코드에서 주석 (1)에 자식 클래스의 companion object에 `ChildCompanion`로 이름을 부여했습니다. 그리고 자식 클래스에 3개의 메소드를 정의했습니다. `child.method0()`은 부모의 method이므로 어렵지 않게 "나는 부모"가 출력되었습니다. `child.method1()`과 `child.method2()`도 역시 자식의 companion object의 속성을 가리킨다는 것을 알 수 있습니다. 
+위 코드에서 주석 (1)에 자식 클래스의 companion object에 `ChildCompanion`로 이름을 부여했습니다. 그리고 자식 클래스에 3개의 메소드를 정의했습니다. `child.method0()`은 부모의 method이므로 어렵지 않게 "나는 부모"가 출력된 것을 예상할 수 있습니다. 그리고 `child.method1()`과 `child.method2()`도 역시 자식의 companion object의 속성을 가리킨다는 것을 알 수 있습니다. 
 
 이제 진짜 문제인데, 주석(2)는 어떤 결과가 나올 것인가요? 답부터 말씀드리면 "나는 부모"입니다. 놀랍지 않나요? 자식의 companion object를 뛰어 넘어서 부모의 companion object에 직접 접근이 가능하게 되는 순간입니다. 그도 그럴 것이 `fun method3() = Companion.prop`에서 Companion.prop를 하면 이때 `Companion`은 자식 것이 아닙니다. 왜냐하면 자식은 `ChildCompanion`로 이름을 바꿨으니깐요. 그래서 여기서  `Companion`는 부모가 됩니다. 
 
@@ -434,10 +432,9 @@ class Child:Parent(){
 }
 ```
 
-위 코드에서 주석(1)을 보시면 부모 companion object의 이름을 ParentCompanion로 했습니다. 그러자 마자 주석(2) 부분은 컴파일 에러가 납니다. `fun method3() = Companion.prop`이 아닌 `fun method3() = ParentCompanion.prop` 바꿔야 합니다.
+위 코드에서 주석(1)을 보시면 부모 companion object의 이름을 ParentCompanion로 했습니다. 그러자 마자 주석(2) 부분은 컴파일 에러가 납니다. 에러가 안날려면 `fun method3() = Companion.prop`이 아닌 `fun method3() = ParentCompanion.prop` 바꿔야 합니다.
 
-companion object에 이름을 붙이지 않으면 부모의 companion object는 쉐도잉(shadowing)되어 감춰질 뿐임을 우리는 알 수 있었습니다. 
-
+이 실험을 통해 우리는 부모와 자식의 companion object에 이름을 붙이지 않으면 부모의 companion object는 자식 입장에서 쉐도잉(shadowing)되어 감춰질 뿐임을 우리는 알 수 있었습니다. 
 
 
 ## Companion Object를 진정으로 활용해보자. 
@@ -449,18 +446,14 @@ companion object에 이름을 붙이지 않으면 부모의 companion object는 
 
 
 
-
-
-
-## 정리하며 
+## 아직 정리할 사항 
 
 1. companion object는 클래스 내에서 딱 한번만 사용할 수 있음
-2. 인스턴스에서는 companion object에 정의된 맴버에 접근할 수 없음 
-3. companion object에 별명을 지을 수 있다. 별명을 지으면 외부에서 Compaion으로 더이상 접근할 수 없으며 별명으로만 접근이 가능하다.
+2. 인스턴스에서는 companion object에 정의된 맴버에 접근할 수 없음. 클래스 내부에서만 가능 
+3. companion object에 접근제한자를 쓰면? 본인 클래스에서 쓸 수 있는가? 자식에서는?? 
 4. companion object는 인터페이스를 상속해서 만들 수 있다. 
 5. 자바에서 compaion object를 사용하려면 Compaion 키워드를 붙여서 사용해야 한다.
   - 이를 회피하려면 @JvmStatic(메소드)이나 @JvmField(속성)을 변수나 메소드에 붙여야 한다. 
   - 이외에도 const 키워드를 쓰면 get/set이 만들어지지 않아서 속성에 바로 접근이 가능합니다.(프리미티브 타입과 String만 가능)
-6. 내부클래스에도 Companion object를 정의할 수 있나?
-7. inner 클래스에도 CO를 정의할 수 있나?
+
 
