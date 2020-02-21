@@ -88,7 +88,7 @@ class WhoAmI{
 
 위처럼 클래스 생성자는 `constructor` 키워드를 써서 정의합니다. 그리고 생성자에서 받은 인자 `name:String`의 값을 속성인 `this.name`을 통해 `private val name:String`에 할당하고 있습니다. 이 코드는 자세히 보면 너무 중복이 많습니다. 그래서 코틀린 언어 설계자는 이를 단순화했습니다. 즉, 클래스를 정의하자 마자 바로 생성자 및 속성까지 정의한 것입니다. 덕분에 코틀린으로 코드를 짜면 자바보다 훨씬 짧아집니다(이것 때문만은 아니지만 코틀린으로 코딩하면 경험상 코딩량이 최소 50%이상 줄어드는 것 같습니다. 아니면 그보다 더....).
 
-각설하고, 여기서 중요한 것은 클래스로 부터 객체를 생성하기 위해 `val m1 = WhoAmiI("영수")`처럼 합니다. 자바처럼 객체 생성을 위해 **`new` 키워드를 쓰지 않으며 클래스로 부터 인스턴스를 생성하기 위해 클래스 명 뒤에 괄호()를 붙힌다는 점**을 기억하세요 (코틀린에서 `new`를 쓰지 않는다는 점이 과연 무슨 의미인지 생각해보는 것도 나쁘지 않을 것 같습니다). 
+각설하고, 여기서 중요한 것은 클래스로 부터 객체를 생성하기 위해 `val m1 = WhoAmiI("영수")`처럼 합니다. 자바처럼 객체 생성을 위해 마치 함수 호출처럼 **`new` 키워드를 쓰지 않으며 클래스 명 뒤에 괄호()를 붙힌다는 점**을 기억하세요(코틀린에서 `new`를 쓰지 않는다는 점이 과연 무슨 의미인지 생각해보는 것도 나쁘지 않을 것 같습니다). 
 
 
 ## 코틀린의 object 키워드 기초 
@@ -106,12 +106,14 @@ fun main(args: Array<String>){
 }
 ```
 
-object는 특정 클래스나 인터페이스를 확장(`var obj = object:MyClass(){}`또는 `var obj = object:MyInterface{}`)해 만들 수 있으며 위처럼 선언문이 아닌 표현식(`var obj = object{}`)으로 생성할 수 있습니다. 싱글톤이기 때문에 시스템 전체에서 수행해야 하는 기능(메소드로 정의)을 수행하는데는 큰 도움이 될 수 있지만 전역 상태를 유지하는데 쓰면 스레드 경합등으로 위험할 수 있으니 주의해서 사용해야 합니다. 이 글은 object가 아닌 companion object를 다룰 것이므로 이 정도만 소개하는 것으로 마무리 짓겠습니다. 
+object는 특정 클래스나 인터페이스를 확장(`var obj = object:MyClass(){}`또는 `var obj = object:MyInterface{}`)해 만들 수 있으며 위처럼 선언문이 아닌 표현식(`var obj = object{}`)으로 생성할 수 있습니다. 싱글톤이기 때문에 시스템 전체에서 수행해야 하는 기능(메소드로 정의)을 수행하는데는 큰 도움이 될 수 있지만 전역 상태를 유지하는데 쓰면 스레드 경합등으로 위험할 수 있으니 주의해서 사용해야 합니다. 
 
-앞서 미리 말씀드린 companion object는 클래스 내부에 정의되는 object의 특수한 형태입니다. 이제 companion object를 자세히 알아봅시다. 
+언어 수준에서 안전한 싱글턴을 만들어 준다는 점에서 object는 매우 유용합니다. 
+
+이 글은 object가 아닌 companion object를 다룰 것이므로 이 정도만 소개하는 것으로 마무리 짓겠습니다. 앞서 미리 말씀드린 companion object는 클래스 내부에 정의되는 object의 특수한 형태입니다. 이제 companion object를 자세히 알아봅시다. 
 
 
-## 코틀린의 Companion Object는 static이 아닙니다.
+## Companion object는 static이 아닙니다.
 
 사실 코틀린 companion object는 static이 아니며 사용하는 입장에서 static처럼 동작하는 것처럼 보일 뿐입니다. 다음 코드를 보세요. 
 
@@ -141,7 +143,7 @@ fun main(args: Array<String>) {
 
 그래서 위 코드에서 `MyClass2.prop`와 `MyClass2.method()`는 `MyClass2.Companion.prop`과 `MyClass2.Companion.method()` 대신 쓰는 **축약 표현**일 뿐이라는 점을 이해해야 합니다. 언어적으로 지원하는 축약 표현 때문에 companion object가 static으로 착각이 드는 것입니다. 
 
-## 코틀린의 Companion Object는 객체입니다.
+## Companion Object는 객체입니다.
 
 Companion object에서 기억해야 할 중요한 점은 객체라는 것입니다. 그래서 다음과 같은 코딩이 가능해 집니다. 
 
@@ -172,7 +174,7 @@ fun main(args: Array<String>) {
 
 `static` 키워드를 쓰면 클래스 맴버를 companion object처럼 하나의 독립된 객체로 여겨 질 수 없겠죠? 이것도 또한 `static`과 큰 차이점이기도 합니다.
 
-## 코틀린 Companion object 이름 짓기 
+## Companion object 이름 짓기 
 
 companion object의 기본 이름은 `Companion`입니다. 앞서 `MyClass2.Companion.prop`처럼 사용할 수 있음을 기억해 보시면 이해가 됩니다. 이 이름은 바꿀 수 있습니다.
 
@@ -214,9 +216,240 @@ fun main(args: Array<String>) {
 
 ```
 
-위 코드처럼 타입 추론(코틀린은 타입 추론 때문에 코드량이 급격이 줄어든다)을 사용하지 않는다면 MyClass3의 결과는 MyClass3.MyCompanion이기 때문에 이렇게 사용해도 컴파일 에러없이 정상 동작할 수 있음을 유추할 수 있다.
+위 코드처럼 타입 추론(코틀린은 타입 추론 때문에 코드량이 급격이 줄어든다)을 사용하지 않는다면 MyClass3의 결과는 MyClass3.MyCompanion이기 때문에 이렇게 사용해도 컴파일 에러없이 정상 동작할 수 있음을 유추할 수 있습니다.
 
-## 코틀린 Companion Object 활용 
+## 클래스내 Companion Object는 딱 하나만 쓸 수 있습니다.
+
+클래스 내에 2개 이상 companion object를 쓰는 것은 안됩니다. 지금까지 학습한 것을 유추해 보면 당연한 건데 코틀린은 클래스 명만으로 companion object 객체를 참조할 수 있기 때문에 한 번에 2개를 참조하는 것은 애초부터 불가능한 것이지요. 
+
+```kotlin
+class MyClass5{
+    companion object{
+        val prop1 = "나는 Companion object의 속성이다."
+        fun method1() = "나는 Companion object의 메소드다."
+    }
+    companion object{ // -- (1) 에러발생!! Only one companion object is allowed per class
+        val prop2 = "나는 Companion object의 속성이다."
+        fun method2() = "나는 Companion object의 메소드다."
+    }
+}
+```
+
+위처럼 만들면 `Only one companion object is allowed per class` 에러가 발생할 것입니다.
+
+```kotlin
+class MyClass5{
+    companion object MyCompanion1{
+        val prop1 = "나는 Companion object의 속성이다."
+        fun method1() = "나는 Companion object의 메소드다."
+    }
+    companion object MyCompanion2{
+        val prop2 = "나는 Companion object의 속성이다."
+        fun method2() = "나는 Companion object의 메소드다."
+    }
+}
+```
+위 코드처럼 companion object 이름을 부여해도 마찬가지입니다. 덕분에 자바에서 static 맴버를 클래스에 아무데나 쓰는게 제약이 없었다면 코틀린에서는 자동으로 한 곳에 모이게 됩니다. 물론 이 목적으로 companion object를 한 개만 있도록 코틀린이 설계된 것은 아닙니다.
+
+## 인터페이스 내에도 Companion Object를 정의할 수 있습니다.
+
+코틀린 인터페이스내에 companion object를 정의할 수 있습니다. 이 점은 인터페이스 수준에서 상수항을 정의할 수 있으며 관련된 중요 로직을 이곳에 기술할 수 있습니다. 이 특징을 잘 활용하면 설계하는데 도움이 될 것입니다. 
+
+```kotlin
+interface MyInterface{
+    companion object{
+        val prop = "나는 인터페이스 내의 Companion object의 속성이다."
+        fun method() = "나는 인터페이스 내의 Companion object의 메소드다."
+    }
+}
+fun main(args: Array<String>) {
+    println(MyInterface.prop)
+    println(MyInterface.method())
+    
+    val comp1 = MyInterface.Companion
+    println(comp1.prop)
+    println(comp1.method())
+
+    val comp2 = MyInterface
+    println(comp2.prop)
+    println(comp2.method())    
+}
+```
+
+이제 위 코드가 이해가 되시죠? 완벽히 이해가 안되시면 다시 위에서부터 차근차근 읽으세요.
+
+뇌피셜이지만 이렇게 보면 인터페이스도 클래스와 별반 차이가 없어 보입니다. `interface` 키워드와 `class` 키워드만 다를 뿐이지 기본 내부 동작은 똑같다는 생각이 듭니다. 인터페이스의 기본기능에 클래스로 만들며 확장한 것 아닐까요? 결국, 클래스나 인터페이스 모두 객체일 뿐이며 특수한 역할을 위해 조금씩 변형했다는 느낌이 듭니다. 코틀린 설계자는 뭔가 언어 동작의 일관성을 만들기 위해 많은 연구를 했음을 짐작하게 합니다. 더 깊은 세계를 알고 싶게 하는 흥미로운 사실입니다. 언어 설계 수준에서 학습해 보고 싶네요. 
+
+## 내부 클래스에도 Companion object를 정의할 수 있습니다.
+
+물론 클래스 내부에 있는 클래스도 companion object를 정의할 수 있습니다. 
+```kotlin
+class MyClass4{
+    class MyInnerClass{
+        companion object{
+            fun method() = "나는 내부 클래스의 Companion object의 메소드다."
+        }
+    }
+    fun method() = MyInnerClass.method() //MyInnerClass.Companion.method()와 같음 
+}
+fun main(args: Array<String>) {
+    println(MyClass4().method()) //나는 내부 클래스의 Companion object의 메소드다.
+    println(MyClass4.MyInnerClass.method()) //나는 내부 클래스의 Companion object의 메소드다.
+    println(MyClass4.MyInnerClass.Companion.method()) //나는 내부 클래스의 Companion object의 메소드다.
+}
+```
+
+메인 함수에서 첫번째 줄은 실행시 `MyClass4().method()`는 `MyClass4` 클래스의 객체를 생성하고 객체의 메소드를 생성되자 마자 호출한 것입니다. 두번째와 세번째 줄은 내부 클래스의 companion object에 정의된 메소드를 직접 접근해서 호출했습니다. 여기서도 `Comanion` 이름은 붙이나 마나인 것을 알 수 있습니다.
+
+
+하지만 아래처럼 내부 클래스에 `inner` 키워드를 붙이면 companion object를 정의할 수 없습니다.
+
+```
+class MyClass4{
+    inner class MyInnerClass{
+        companion object{  // 에러 발생 - Companion object is not allowed here
+            fun method() = "나는 내부 클래스의 Companion object의 메소드다."
+        }
+    }
+}
+```
+
+왜 그럴까요????? `inner class`를 정확히 공부하면 이해가 될 순간이 올 것 같습니다. 
+
+
+## 상속 관계 클래스에서 부모 클래스의 Companion object는 가려집니다(쉐도잉, shadowing).
+
+기본적으로는 부모 클래스를 상속한 자식 클래스가 있다면 부모 클래스에 선언한 companion object는 자식 클래스에 선언한 companion object와 독립적입니다. 서로 연결고리는 없습니다. 아래 코드로 이해해 볼까요? 
+
+```kotlin
+open class Parent{
+    companion object{
+        val prop = "나는 부모"
+    }
+    fun method0() = prop //Companion.prop과 동일
+}
+class Child:Parent(){
+    companion object{
+        val prop = "나는 자식"
+    }
+    fun method1() = prop //Companion.prop 과 동일
+}
+fun main(args: Array<String>) {
+    println(Parent().method0()) //나는 부모
+    println(Child().method0()) //나는 부모 
+    println(Child().method1()) //나는 자식
+
+    println(Parent.prop) //나는 부모
+    println(Child.prop) //나는 자식
+
+    println(Parent.Companion.prop) //나는 부모
+    println(Child.Companion.prop) //나는 자식
+}
+```
+
+위 코드를 자세히 보면 인스턴스 메소드를 보면 부모/자식 둘다 자신의 companion object의 prop의 값을 반환하고 있습니다. main함수에서 예상대로 결과가 나왔습니다. 
+
+다만 조금 흥미로운 부분은 `Child().method0()`의 결과입니다. `method0()` 메소드는 `Parent`클래스 것입니다. 그래서 부모의 companion object의 prop값인 "나는 부모"가 출력되었습니다. 
+
+아래 코드를 보겠습니다. 
+
+```kotlin
+open class Parent{
+    companion object{
+        val prop = "나는 부모"
+    }
+    open fun method() = prop //Companion.prop과 동일
+}
+class Child:Parent(){
+    companion object{
+        val prop = "나는 자식"
+    }
+    override fun method() = prop //Companion.prop 과 동일
+}
+fun main(args: Array<String>) {
+    println(Parent().method()) //나는 부모
+    println(Child().method()) //나는 자식
+
+    val p:Parent = Child()
+    println(p.method()) // -- (1)
+}
+```
+
+클래스 정의를 먼저 자세히 보면 `Parent`의 `method()` 메소드가 open이고 `Child`에서 이를 override했습니다. `main()`함수에서 첫번째와 두번째 실행 결과는 쉽게 예측이 됩니다. 하지만 주석(1)의 결과는 무엇일까요? 분명 `Child`클래스의 객체를 생성했으나 `Parent` 부모로 형변환 했습니다. 그럼 이때 호출한 method() 결과는 대체 무엇인가요? 
+
+이 문제는 compaion object문제가 아닙니다. 게다가 코틀린 문제도 아닙니다. 사실 이 문제는 객체지향언어서 약속한 **다형성(Polymorphism)**에 대한 질문입니다. 다형성은 두가지를 만족해야 합니다.
+
+1. 대체가능성(substitution) – 어떤 형을 요구한다면 그 형의 자식형으로 그 자리를 대신할 수 있다.
+2. 내적동질성(internal identity) – 객체는 그 객체를 참조하는 방식에 따라 변화하지 않는다. 즉 업다운캐스팅해도 여전히 최초 생성한 그 객체라는 것입니다.
+
+이 두가지 조건을 만족하면 다형성을 만족한다고 볼 수 있고 다형성을 만족하면 객체지향 언어라고 볼 수 있습니다. 다형성의 1번 조건인 대체가능성 때문에 `var c:Parent = Child()`를 할 수 있었던 것입니다. 그리고 내적동질성으로 인해 아무리 자식을 부모형으로 대체해도 자식은 자식이죠. 그래서 `p.method()`의 결과는 `Child().method()`결과와 같습니다. 그러므로 결과는 "나는 자식" 입니다.
+
+갑자기 객체지향의 다형성... 딴 길로 흘렀습니다. 
+
+다른 재미있는 실험을 해봅니다. 자식의  companion object에 이름을 부여합니다. 
+
+```kotlin
+open class Parent{
+    companion object{
+        val prop = "나는 부모"
+    }
+    fun method0() = prop
+}
+class Child:Parent(){
+    companion object ChildCompanion{ // -- (1) ChildCompanion로 이름을 부여했어요. 
+        val prop = "나는 자식"
+    }
+    fun method1() = prop
+    fun method2() = ChildCompanion.prop
+    fun method3() = Companion.prop
+}
+fun main(args: Array<String>) {
+    val child = Child()
+    println(child.method0()) //나는 부모
+    println(child.method1()) //나는 자식
+    println(child.method2()) //나는 자식
+    println(child.method3()) // -- (2)
+```
+
+위 코드에서 주석 (1)에 자식 클래스의 companion object에 `ChildCompanion`로 이름을 부여했습니다. 그리고 자식 클래스에 3개의 메소드를 정의했습니다. `child.method0()`은 부모의 method이므로 어렵지 않게 "나는 부모"가 출력되었습니다. `child.method1()`과 `child.method2()`도 역시 자식의 companion object의 속성을 가리킨다는 것을 알 수 있습니다. 
+
+이제 진짜 문제인데, 주석(2)는 어떤 결과가 나올 것인가요? 답부터 말씀드리면 "나는 부모"입니다. 놀랍지 않나요? 자식의 companion object를 뛰어 넘어서 부모의 companion object에 직접 접근이 가능하게 되는 순간입니다. 그도 그럴 것이 `fun method3() = Companion.prop`에서 Companion.prop를 하면 이때 `Companion`은 자식 것이 아닙니다. 왜냐하면 자식은 `ChildCompanion`로 이름을 바꿨으니깐요. 그래서 여기서  `Companion`는 부모가 됩니다. 
+
+아래 코드에서는 부모의 companion object 마저 이름을 붙여봅니다. 
+
+```kotlin
+open class Parent{
+    companion object ParentCompanion{ // -- (1) ParentCompanion로 이름을 부여했어요. 
+        val prop = "나는 부모"
+    }
+    fun method0() = prop
+}
+class Child:Parent(){
+    companion object ChildCompanion{ 
+        val prop = "나는 자식"
+    }
+    fun method1() = prop
+    fun method2() = ChildCompanion.prop
+    fun method3() = Companion.prop // -- (2) Unresolved reference: Companion 에러!!
+}
+```
+
+위 코드에서 주석(1)을 보시면 부모 companion object의 이름을 ParentCompanion로 했습니다. 그러자 마자 주석(2) 부분은 컴파일 에러가 납니다. `fun method3() = Companion.prop`이 아닌 `fun method3() = ParentCompanion.prop` 바꿔야 합니다.
+
+companion object에 이름을 붙이지 않으면 부모의 companion object는 쉐도잉(shadowing)되어 감춰질 뿐임을 우리는 알 수 있었습니다. 
+
+
+
+## Companion Object를 진정으로 활용해보자. 
+
+코틀린이 static을 버리고 Companion Object를 쓴다는 점에서 발견할 수 있는 장점은 무엇이 있을까요? 위에서 언급한 특징만으로 코틀린이 정말 매력적인 언어라는 것을 알기는 힘들지 모릅니다. static보다 장점이라기 보다 static 역할을 하면서 companion object 객체를 대신해서 쓴다는 점 외에는 나아 보일 것이 없어 보일 수 있습니다. 
+
+하지만 companion object의 특징과 여러가지 다른 특징을 잘 활용하면 개발시 유용하게 쓸 수 있습니다. 제가 경험한 것 중 하나만 예시를 들어보겠습니다. 저는 companion object와 속성 delegate를 사용해 리플렉션(reflection)을 쓰지 않고 동적 자원을 정적 자원으로 쓰는 방법을 소개하겠습니다. 
+
+
+
+
+
 
 
 ## 정리하며 
