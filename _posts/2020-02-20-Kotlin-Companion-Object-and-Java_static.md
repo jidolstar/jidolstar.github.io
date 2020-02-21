@@ -210,10 +210,9 @@ fun main(args: Array<String>) {
 하지만 주석 (5)처럼 기존 이름인 `Companion`을 쓰면 **Unresolved reference: Companion** 에러가 납니다. 
 
 ```kotlin
-    val comp4:MyClass3.MyCompanion = MyClass3
-    println(comp4.prop)
-    println(comp4.method())
-
+val comp4:MyClass3.MyCompanion = MyClass3
+println(comp4.prop)
+println(comp4.method())
 ```
 
 위 코드처럼 타입 추론(코틀린은 타입 추론 때문에 코드량이 급격이 줄어든다)을 사용하지 않는다면 MyClass3의 결과는 MyClass3.MyCompanion이기 때문에 이렇게 사용해도 컴파일 에러없이 정상 동작할 수 있음을 유추할 수 있습니다.
@@ -304,7 +303,7 @@ fun main(args: Array<String>) {
 
 하지만 아래처럼 내부 클래스에 `inner` 키워드를 붙이면 companion object를 정의할 수 없습니다.
 
-```
+```kotlin
 class MyClass4{
     inner class MyInnerClass{
         companion object{  // 에러 발생 - Companion object is not allowed here
@@ -407,6 +406,7 @@ fun main(args: Array<String>) {
     println(child.method1()) //나는 자식
     println(child.method2()) //나는 자식
     println(child.method3()) // -- (2)
+}
 ```
 
 위 코드에서 주석 (1)에 자식 클래스의 companion object에 `ChildCompanion`로 이름을 부여했습니다. 그리고 자식 클래스에 3개의 메소드를 정의했습니다. `child.method0()`은 부모의 method이므로 어렵지 않게 "나는 부모"가 출력된 것을 예상할 수 있습니다. 그리고 `child.method1()`과 `child.method2()`도 역시 자식의 companion object의 속성을 가리킨다는 것을 알 수 있습니다. 
