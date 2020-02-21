@@ -12,7 +12,7 @@ hidden: false
 
 ---
 
-**코틀린(Kotlin)**의 ==Companion object==는 단순히 자바(Java)의 static 키워드를 대체하기 위해서 탄생했을까요? 이 갑작스런 질문은 왜 코틀린에서 static을 안쓰게 되었는지 이해하는데 큰 도움이 될 수 있습니다. 
+**코틀린(Kotlin)**의 **Companion object**는 단순히 자바(Java)의 static 키워드를 대체하기 위해서 탄생했을까요? 이 갑작스런 질문은 왜 코틀린에서 static을 안쓰게 되었는지 이해하는데 큰 도움이 될 수 있습니다. 
 
 자바의 static 키워드는 클래스 맴버(member)임을 지정하기 위해 사용합니다. static이 붙은 변수와 메소드를 각각 클래스 변수, 클래스 메소드라 부릅니다. 반면, static이 붙지 않은 클래스 내의 변수와 메소드는 각각 인스턴스 변수, 인스턴스 메소드라 합니다. static이 붙은 맴버는 클래스가 메모리에 적재될 때 자동으로 생성되므로 인스턴스 생성없이 클래스명 다음에 점(.)을 쓰면 바로 참조할 수 있습니다.  
 
@@ -74,7 +74,7 @@ fun main(args: Array<String>){
 }
 ```
 
-클래스 `WhoAmI`를 정의하면서 생성자의 인자로 `val name:String`을 받습니다. 자바에 익숙하나 코틀린을 처음 접하면 이게 무슨 생성자인가 생각이 들 수 있습니다. `WhoAmI`클래스를 자바 개발자가 이해하기 쉽게 풀어 쓰면 다음과 같습니다.
+클래스 `WhoAmI`를 정의하면서 생성자의 인자로 `val name:String`을 받습니다. 자바에 익숙하나 코틀린을 처음 접한 분에게는 이게 무슨 생성자인가 생각이 들 수 있습니다. `WhoAmI`클래스를 자바 개발자가 이해하기 쉽게 풀어 쓰면 다음과 같습니다.
 
 ```kotlin
 class WhoAmI{
@@ -88,12 +88,12 @@ class WhoAmI{
 
 위처럼 클래스 생성자는 `constructor` 키워드를 써서 정의합니다. 그리고 생성자에서 받은 인자 `name:String`의 값을 속성인 `this.name`을 통해 `private val name:String`에 할당하고 있습니다. 이 코드는 자세히 보면 너무 중복이 많습니다. 그래서 코틀린 언어 설계자는 이를 단순화했습니다. 즉, 클래스를 정의하자 마자 바로 생성자 및 속성까지 정의한 것입니다. 덕분에 코틀린으로 코드를 짜면 자바보다 훨씬 짧아집니다(이것 때문만은 아니지만 코틀린으로 코딩하면 경험상 코딩량이 최소 50%이상 줄어드는 것 같습니다. 아니면 그보다 더....).
 
-각설하고, 여기서 중요한 것은 클래스로 부터 객체를 생성하기 위해 `val m1 = WhoAmiI("영수")`처럼 합니다. 자바처럼 객체 생성을 위해 ==`new` 키워드를 쓰지 않으며 클래스로 부터 인스턴스를 생성하기 위해 클래스 명 뒤에 괄호()를 붙힌다는 점==을 기억하세요 (코틀린에서 `new`를 쓰지 않는다는 점이 과연 무슨 의미인지 생각해보는 것도 나쁘지 않을 것 같습니다). 
+각설하고, 여기서 중요한 것은 클래스로 부터 객체를 생성하기 위해 `val m1 = WhoAmiI("영수")`처럼 합니다. 자바처럼 객체 생성을 위해 **`new` 키워드를 쓰지 않으며 클래스로 부터 인스턴스를 생성하기 위해 클래스 명 뒤에 괄호()를 붙힌다는 점**을 기억하세요 (코틀린에서 `new`를 쓰지 않는다는 점이 과연 무슨 의미인지 생각해보는 것도 나쁘지 않을 것 같습니다). 
 
 
 ## 코틀린의 object 키워드 기초 
 
-코틀린에는 자바에 없는 독특한 ==싱글턴(singletion; 인스턴스가 하나만 있는 클래스)== 선언 방법이 있습니다. 아래처럼 `class` 키워드 대신 `object` 키워드를 사용하면 됩니다. 
+코틀린에는 자바에 없는 독특한 싱글턴(singletion; 인스턴스가 하나만 있는 클래스) 선언 방법이 있습니다. 아래처럼 `class` 키워드 대신 `object` 키워드를 사용하면 됩니다. 
 
 ```kotlin
 object MySingleton{
@@ -123,23 +123,23 @@ class MyClass2{
     }
 }
 fun main(args: Array<String>) {
-	//사실은 MyClass2.맴버는 MyClass2.Companion.맴버의 축약표현이다.
+    //사실은 MyClass2.맴버는 MyClass2.Companion.맴버의 축약표현이다.
     println(MyClass2.Companion.prop)
     println(MyClass2.Companion.method())
 }
 ```
 
-`MyClass2` 클래스에 companion object를 만들어 2개의 맴버를 정의했습니다. 이를 사용하는 main()함수를 보면 이 맴버에 접근하기 위해 ==클래스명.Companion== 형태로 쓴 것을 확인할 수 있습니다. 이로써 유추할 수 있는 것은 `companion object{}`는 `MyClass2` 클래스가 메모리에 적재되면서 함께 생성되어 동반(companion)되는 객체이고 이 동반 객체는 `클래스명.Companion`으로 접근할 수 있다는 점입니다. (클래스와 동반자라고 하면 정감이 가려나요?)
+`MyClass2` 클래스에 companion object를 만들어 2개의 맴버를 정의했습니다. 이를 사용하는 main()함수를 보면 이 맴버에 접근하기 위해 `클래스명.Companion` 형태로 쓴 것을 확인할 수 있습니다. 이로써 유추할 수 있는 것은 `companion object{}`는 `MyClass2` 클래스가 메모리에 적재되면서 함께 생성되어 동반(companion)되는 객체이고 이 동반 객체는 `클래스명.Companion`으로 접근할 수 있다는 점입니다. (클래스와 동반자라고 하면 정감이 가려나요?)
 
 ```kotlin
 fun main(args: Array<String>) {
-	//사실은 MyClass2.맴버는 MyClass2.Companion.맴버의 축약표현이다.
+    //사실은 MyClass2.맴버는 MyClass2.Companion.맴버의 축약표현이다.
     println(MyClass2.prop)
     println(MyClass2.method())
 }
 ```
 
-그래서 위 코드에서 `MyClass2.prop`와 `MyClass2.method()`는 `MyClass2.Companion.prop`과 `MyClass2.Companion.method()` 대신 쓰는 ==축약 표현==일 뿐이라는 점을 이해해야 합니다. 언어적으로 지원하는 축약 표현 때문에 companion object가 static으로 착각이 드는 것입니다. 
+그래서 위 코드에서 `MyClass2.prop`와 `MyClass2.method()`는 `MyClass2.Companion.prop`과 `MyClass2.Companion.method()` 대신 쓰는 **축약 표현**일 뿐이라는 점을 이해해야 합니다. 언어적으로 지원하는 축약 표현 때문에 companion object가 static으로 착각이 드는 것입니다. 
 
 ## 코틀린의 Companion Object는 객체입니다.
 
@@ -195,7 +195,7 @@ fun main(args: Array<String>) {
     println(comp2.prop)
     println(comp2.method())
     
-	val comp3 = MyClass3.Companion // -- (5) 에러발생!!!
+    val comp3 = MyClass3.Companion // -- (5) 에러발생!!!
     println(comp3.prop)
     println(comp3.method())
 }
@@ -205,7 +205,7 @@ fun main(args: Array<String>) {
 
 그러나 여전히 주석 (4)를 보시면 생략할 수 있습니다. 
 
-하지만 주석 (5)처럼 기존 이름인 `Companion`을 쓰면 ==Unresolved reference: Companion== 에러가 납니다. 
+하지만 주석 (5)처럼 기존 이름인 `Companion`을 쓰면 **Unresolved reference: Companion** 에러가 납니다. 
 
 ```kotlin
     val comp4:MyClass3.MyCompanion = MyClass3
