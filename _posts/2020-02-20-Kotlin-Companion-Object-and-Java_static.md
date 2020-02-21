@@ -3,8 +3,10 @@ layout: post
 title: "코틀린의 Companion Object는 클래스 Static인가?"
 date: 2020-02-20 20:00:00 +0900
 categories: kotlin 코틀린
+tags: [코틀린, kotlin, Comapanion object, static]
 author: 지용호
 image: assets/images/11.jpg
+comments: true
 featured: true
 hidden: false
 ---
