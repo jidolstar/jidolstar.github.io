@@ -318,7 +318,7 @@ class MyClass4{
 왜 그럴까요????? `inner class`를 정확히 공부하면 이해가 될 순간이 올 것 같습니다. 나중에 정확히 알게 되면 글을 정정하겠습니다.
 
 
-## 부모 클래스의 Companion object는 가려집니다(쉐도잉, shadowing).
+## 부모 클래스의 Companion object는 가려집니다(섀도잉, shadowing).
 
 부모 클래스를 상속한 자식 클래스가 있다면 부모 클래스에 선언한 companion object는 자식 클래스에 선언한 companion object와 관계가 없는 것처럼 동작합니다. 그 이유를 알아가 봅시다.
 
