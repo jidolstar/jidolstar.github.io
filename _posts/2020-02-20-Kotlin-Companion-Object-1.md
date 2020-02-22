@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "코틀린의 Companion Object는 자바의 static과 같은 것인가? (1)"
+title: "코틀린의 Companion Object (1) - 자바의 static과 같은 것인가?"
 date: 2020-02-20 20:00:00 +0900
 categories: kotlin 코틀린
 tags: [코틀린, kotlin, Comapanion object, static]

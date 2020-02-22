@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "코틀린의 Companion Object를 조금 더 알아보자"
+title: "코틀린의 Companion Object (2) - 작성중"
 date: 2020-02-23 20:00:00 +0900
 categories: kotlin 코틀린
 tags: [코틀린, kotlin, Comapanion object]
