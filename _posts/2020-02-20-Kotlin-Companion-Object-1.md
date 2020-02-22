@@ -2,7 +2,7 @@
 layout: post
 title: "코틀린의 Companion Object (1) - 자바의 static과 같은 것인가?"
 date: 2020-02-20 20:00:00 +0900
-categories: kotlin 코틀린
+categories: Kotlin(코틀린)
 tags: [코틀린, kotlin, Comapanion object, static]
 author: 지용호
 image: assets/images/11.jpg
@@ -56,7 +56,7 @@ fun main(args: Array<String>){
 }
 ```
 
-코틀린은 static을 버리고 companion object를 도입했으며 더욱 명쾌하고 멋진 방법으로 문제를 해결하는 데 도움을 주도록 했습니다. 이 글은 companion object와 static의 차이점을 이해하고 static의 한계를 파악하는 동시에 companion object의 장점을 학습에 도움을 주는 데 목적이 있습니다.
+코틀린은 static을 버리고 companion object를 도입했으며 더욱 명쾌하고 멋진 방법으로 문제를 해결하는 데 도움을 주도록 했습니다. 이 글은 companion object와 static의 차이점을 이해하고 static의 한계를 파악하는 동시에 companion object 학습에 도움을 주는 데 목적이 있습니다.
 
 ## 코틀린의 class 키워드 기초
 
