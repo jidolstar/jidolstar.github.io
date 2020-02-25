@@ -227,7 +227,7 @@ class MyClass5{
         val prop1 = "나는 Companion object의 속성이다."
         fun method1() = "나는 Companion object의 메소드다."
     }
-    companion object{ // -- (1) 에러발생!! Only one companion object is allowed per class
+    companion object{ // -- 에러발생!! Only one companion object is allowed per class
         val prop2 = "나는 Companion object의 속성이다."
         fun method2() = "나는 Companion object의 메소드다."
     }
@@ -242,7 +242,7 @@ class MyClass5{
         val prop1 = "나는 Companion object의 속성이다."
         fun method1() = "나는 Companion object의 메소드다."
     }
-    companion object MyCompanion2{
+    companion object MyCompanion2{ // --  에러발생!! Only one companion object is allowed per class
         val prop2 = "나는 Companion object의 속성이다."
         fun method2() = "나는 Companion object의 메소드다."
     }
@@ -266,7 +266,7 @@ interface MyInterface{
 fun main(args: Array<String>) {
     println(MyInterface.prop)
     println(MyInterface.method())
-    
+
     val comp1 = MyInterface.Companion
     println(comp1.prop)
     println(comp1.method())
@@ -281,41 +281,6 @@ fun main(args: Array<String>) {
 
 뇌피셜이지만 이렇게 보면 인터페이스의 해석 및 동작도 클래스와 별반 차이가 없어 보입니다. `interface` 키워드와 `class` 키워드만 다를 뿐이지 기본 내부 동작은 일정 부분 똑같다는 생각이 듭니다. 결국, 언어 수준에서 살펴보면 인터페이스의 기본기능에 클래스로 만들고 확장한 것 아닐까요? 클래스나 인터페이스 모두 객체일 뿐이며 특수한 역할을 위해 조금씩 변형했다는 느낌이 듭니다. 코틀린 설계자는 무엇인가 언어 동작의 일관성을 만들기 위해 많은 연구를 했음을 짐작하게 합니다. 코틀린에 대해 더 깊은 세계를 알고 싶게 하는 흥미로운 사실입니다. 언어 설계 수준에서 학습해 보고 싶네요.
 
-## 내부 클래스에도 Companion object를 정의할 수 있습니다.
-
-물론 클래스 내부에 있는 클래스도 companion object를 정의할 수 있습니다.
-```kotlin
-class MyClass4{
-    class MyInnerClass{
-        companion object{
-            fun method() = "나는 내부 클래스의 Companion object의 메소드다."
-        }
-    }
-    fun method() = MyInnerClass.method() //MyInnerClass.Companion.method()와 같음
-}
-fun main(args: Array<String>) {
-    println(MyClass4().method()) //나는 내부 클래스의 Companion object의 메소드다.
-    println(MyClass4.MyInnerClass.method()) //나는 내부 클래스의 Companion object의 메소드다.
-    println(MyClass4.MyInnerClass.Companion.method()) //나는 내부 클래스의 Companion object의 메소드다.
-}
-```
-
-메인 함수에서 첫 번째 줄은 실행 시 `MyClass4().method()`는 `MyClass4` 클래스의 객체를 생성하자마자 객체의 메소드를 바로 호출한 것입니다. 두 번째와 세 번째 줄은 내부 클래스의 companion object에 정의된 메소드를 직접 접근해서 호출했습니다. 여기서도 `Companion` 이름은 붙이나 마나인 것을 알 수 있습니다.
-
-
-반면에 아래처럼 내부 클래스에 `inner` 키워드를 붙이면 companion object를 정의할 수 없습니다.
-
-```kotlin
-class MyClass4{
-    inner class MyInnerClass{
-        companion object{  // 에러 발생 - Companion object is not allowed here
-            fun method() = "나는 내부 클래스의 Companion object의 메소드다."
-        }
-    }
-}
-```
-
-왜 그럴까요????? `inner class`를 정확히 공부하면 이해가 될 순간이 올 것 같습니다. 나중에 정확히 알게 되면 글을 정정하겠습니다.
 
 
 ## 부모 클래스의 Companion object는 가려집니다(섀도잉, shadowing).
@@ -440,6 +405,6 @@ class Child:Parent(){
 
 
 ## 정리하며 
-조금 코틀린 companion object에 대해서 이해가 되셨나요? 자바의 static과는 다르며 더 많은 일을 할 수 있다는 것도 느껴지시나요? 하지만 이제 맛보기만 했을 뿐입니다. companion object에 대해서 더 학습이 필요하지만, 글이 많이 길어지는 관계로 이 정도로 마무리 짓고 다음에 2번째 글을 올리도록 하겠습니다. 긴 글 읽어주셔서 감사하며, 부족한 점 있거나 잘못된 내용이 있다면 메일 부탁드리겠습니다. 
+조금 코틀린 companion object에 대해서 이해가 되셨나요? 자바의 static과는 다르며 더 많은 일을 할 수 있다는 것도 느껴지시나요? 하지만 이제 맛보기만 했을 뿐입니다. companion object에 대해서 더 학습이 필요하지만, 글이 많이 길어지는 관계로 이 정도로 마무리 짓고 다음에 2번째 글을 올리도록 하겠습니다. 긴 글 읽어주셔서 감사하며, 부족한 점 있거나 잘못된 내용이 있다면 메일 부탁드리겠습니다.
 
 

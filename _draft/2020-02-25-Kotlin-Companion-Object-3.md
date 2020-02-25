@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "코틀린의 Companion Object (2) - 작성중"
+title: "코틀린의 Companion Object (3) - JVM과 관계"
 date: 2020-02-23 20:00:00 +0900
 categories: Kotlin(코틀린)
 tags: [코틀린, kotlin, Comapanion object]
