@@ -12,7 +12,7 @@ hidden: false
 
 ---
 
-**코틀린(Kotlin)**의 **Companion object**는 단순히 자바(Java)의 static 키워드를 대체하기 위해서 탄생했을까요? 이 갑작스러운 질문은 왜 코틀린에서 static을 안 쓰게 되었는지 이해하는 데 큰 도움이 될 수 있습니다.
+**코틀린(Kotlin)**의 **Companion object**는 단순히 자바(Java)의 static 키워드를 대체하기 위해서 탄생했을까요? 이 갑작스러운 질문은 코틀린에서 왜 static을 안 쓰게 되었는지 이해하는 데 큰 도움이 될 수 있습니다.
 
 자바의 static 키워드는 클래스 멤버(member)임을 지정하기 위해 사용합니다. static이 붙은 변수와 메소드를 각각 클래스 변수, 클래스 메소드라 부릅니다. 반면, static이 붙지 않은 클래스 내의 변수와 메소드는 각각 인스턴스 변수, 인스턴스 메소드라 합니다. static이 붙은 멤버는 클래스가 메모리에 적재될 때 자동으로 함께 생성되므로 인스턴스 생성 없이도 클래스명 다음에 점(.)을 쓰면 바로 참조할 수 있습니다.
 
@@ -28,7 +28,7 @@ System.out.println(MyClass.TEST);		//test
 System.out.println(MyClass.method(1)); 	//11
 ```
 
-자바(Java) 개발 경험이 있는 사람들에게는 코틀린(Kotin)에 static이 없다는 사실에 당황할 수 있습니다. 대신 코틀린은 `companion object`라는 키워드와 함께 블록({}) 안에 멤버를 구성합니다.
+자바(Java) 개발 경험이 있는 분은 코틀린(Kotin)에 static이 없다는 사실에 당황할 수 있습니다. 대신 코틀린은 `companion object`라는 키워드와 함께 블록({}) 안에 멤버를 구성합니다.
 
 ```kotlin
 class MyClass{
@@ -283,9 +283,33 @@ fun main(args: Array<String>) {
 
 
 
-## 부모 클래스의 Companion object는 가려집니다(섀도잉, shadowing).
+## 상속 관계에서 Companion object 멤버는 같은 이름일 경우 가려집니다. - 섀도잉, shadowing
 
-부모 클래스를 상속한 자식 클래스가 있다면 부모 클래스에 선언한 companion object는 자식 클래스에 선언한 companion object와 관계가 없는 것처럼 동작합니다. 그 이유를 알아가 봅시다.
+부모 클래스를 상속한 자식 클래스에 모두 companion object를 만들고 같은 이름의 멤버를 정의했다고 가정합니다. 이때, 자식 클래스에서 이 멤버를 참조하면 부모의 멤버는 가려지고 자식 자신의 멤버만 참조할 수 있습니다. 말이 어려우니 코드로 이해해 보겠습니다. 
+
+```kotlin
+open class Parent{
+    companion object{
+        val parentProp = "나는 부모값"
+    }
+    fun method0() = parentProp
+}
+class Child:Parent(){
+    companion object{
+        val childProp = "나는 자식값"
+    }
+    fun method1() = childProp
+    fun method2() = parentProp
+}
+fun main(args: Array<String>) {
+    val child = Child()
+    println(child.method0()) //나는 부모값
+    println(child.method1()) //나는 자식값
+    println(child.method2()) //나는 부모값
+}
+```
+
+위 코드처럼 부모/자식의 companion object의 멤버가 다른 이름이라면 자식이 부모의 companion object 멤버를 직접 참조할 수 있습니다. 하지만 같은 이름이면 어떻게 될까요? 다음 코드를 봅시다.
 
 ```kotlin
 open class Parent{
@@ -313,9 +337,66 @@ fun main(args: Array<String>) {
 }
 ```
 
-위 코드를 자세히 보면 부모/자식 둘 다 자신의 companion object의 prop의 값을 반환하고 있습니다. main() 함수에서 예상대로 결과가 나왔습니다. 다만 조금 헷갈릴 수 있는 부분은 `Child().method0()`의 결과일 것입니다. `method0()` 메소드는 `Parent`클래스 것입니다. 그래서 부모의 companion object의 prop값인 "나는 부모"가 출력되었습니다.
+위 코드에서 부모/자식 모두 자신의 companion object의 prop의 값을 반환하고 있습니다. 같은 이름(prop)을 사용했다는 것을 확인하세요. main() 함수의 결과를 보면 자식클래스의 companion object 속성인 prop이 부모에서 정의 되어 있지만 가려져서 무시되는 것을 볼 수 있습니다. 
 
-조금 난도를 높여보겠습니다. 아래 코드를 보겠습니다.
+여기서 조금 헷갈릴 수 있는 부분은 `Child().method0()`의 결과일 것입니다. `method0()` 메소드는 `Parent`클래스 것입니다. 그래서 부모의 companion object의 prop값인 "나는 부모"가 출력되었습니다.
+
+이제 위 코드를 조금 변경해 보겠습니다. 자식클래스의 companion object에 이름을 부여합니다.
+
+```kotlin
+open class Parent{
+    companion object{
+        val prop = "나는 부모"
+    }
+    fun method0() = prop
+}
+class Child:Parent(){
+    companion object ChildCompanion{ // -- (1) ChildCompanion로 이름을 부여했어요.
+        val prop = "나는 자식"
+    }
+    fun method1() = prop
+    fun method2() = ChildCompanion.prop
+    fun method3() = Companion.prop
+}
+fun main(args: Array<String>) {
+    val child = Child()
+    println(child.method0()) //나는 부모
+    println(child.method1()) //나는 자식
+    println(child.method2()) //나는 자식
+    println(child.method3()) // -- (2)
+}
+```
+
+위 코드에서 주석 (1)에 자식 클래스의 companion object에 `ChildCompanion`로 이름을 부여했습니다. 그리고 자식 클래스에 3개의 메소드를 정의했습니다. `child.method0()`은 부모의 method이므로 어렵지 않게 "나는 부모"가 출력된 것을 예상할 수 있습니다. 그리고 `child.method1()`과 `child.method2()`도 역시 자식의 companion object의 속성을 가리킨다는 것을 알 수 있습니다.
+
+이제 진짜 문제인데, 주석(2)는 어떤 결과가 나올까요? 답부터 말씀드리면 "나는 부모"입니다. 자식의 companion object를 뛰어넘어서 부모의 companion object에 직접 접근이 가능하게 되었습니다. `fun method3() = Companion.prop`에서 Companion.prop를 하면 이때 `Companion`은 자식 것이 아닙니다. 왜냐하면 자식은 `ChildCompanion`로 이름을 바꿨으니깐요. 그래서 여기서 `Companion`은 부모가 됩니다.
+
+아래 코드에서는 부모의 companion object마저 이름을 붙여봅니다.
+
+```kotlin
+open class Parent{
+    companion object ParentCompanion{ // -- (1) ParentCompanion로 이름을 부여했어요.
+        val prop = "나는 부모"
+    }
+    fun method0() = prop
+}
+class Child:Parent(){
+    companion object ChildCompanion{
+        val prop = "나는 자식"
+    }
+    fun method1() = prop
+    fun method2() = ChildCompanion.prop
+    fun method3() = Companion.prop // -- (2) Unresolved reference: Companion 에러!!
+}
+```
+
+위 코드에서 주석(1)을 보시면 부모 companion object의 이름을 ParentCompanion로 했습니다. 그러자마자 주석(2) 부분은 컴파일 에러가 납니다. 에러가 안 날려면 `fun method3() = Companion.prop`이 아닌 `fun method3() = ParentCompanion.prop` 바꿔야 합니다.
+
+이 실험을 통해 부모/자식의 companion object에 정의된 멤버는 자식 입장에서 접근할 수 있지만, 같은 이름을 쓰면 섀도잉(shadowing) 되어 감춰진다는 점을 알 수 있었습니다.
+
+## 다형성 문제
+
+companion object 문제가 아닌 코드를 보겠습니다. 이 글의 보너스 파트 정도로 봐주세요. 
 
 ```kotlin
 open class Parent{
@@ -348,63 +429,9 @@ fun main(args: Array<String>) {
 
 이 두 가지 조건을 만족하면 다형성을 만족한다고 볼 수 있고 거꾸로 다형성을 만족하면 객체지향 언어라고 볼 수 있습니다. 다형성의 1번 조건인 대체 가능성 때문에 `var c:Parent = Child()`를 할 수 있었던 것입니다. 그리고 2번 조건인 내적 동질성으로 인해 아무리 자식을 부모 형으로 대체해도 자식은 자식이죠. 태어날 때의 본질은 어디 가지 않습니다! 그래서 `p.method()`의 결과는 `Child().method()`결과와 같습니다. 그러므로 결과는 "나는 자식" 입니다.
 
-갑자기 왠~ 객체지향의 다형성... 딴 길로 흘렀습니다.
-
-다른 재미있는(?) 실험을 해봅니다. 여기서 진짜 알려드리고 싶은 내용입니다. 일단 자식의 companion object에 이름을 부여합니다.
-
-```kotlin
-open class Parent{
-    companion object{
-        val prop = "나는 부모"
-    }
-    fun method0() = prop
-}
-class Child:Parent(){
-    companion object ChildCompanion{ // -- (1) ChildCompanion로 이름을 부여했어요.
-        val prop = "나는 자식"
-    }
-    fun method1() = prop
-    fun method2() = ChildCompanion.prop
-    fun method3() = Companion.prop
-}
-fun main(args: Array<String>) {
-    val child = Child()
-    println(child.method0()) //나는 부모
-    println(child.method1()) //나는 자식
-    println(child.method2()) //나는 자식
-    println(child.method3()) // -- (2)
-}
-```
-
-위 코드에서 주석 (1)에 자식 클래스의 companion object에 `ChildCompanion`로 이름을 부여했습니다. 그리고 자식 클래스에 3개의 메소드를 정의했습니다. `child.method0()`은 부모의 method이므로 어렵지 않게 "나는 부모"가 출력된 것을 예상할 수 있습니다. 그리고 `child.method1()`과 `child.method2()`도 역시 자식의 companion object의 속성을 가리킨다는 것을 알 수 있습니다.
-
-이제 진짜 문제인데, 주석(2)는 어떤 결과가 나올까요? 답부터 말씀드리면 "나는 부모"입니다. 놀랍지 않나요? 자식의 companion object를 뛰어넘어서 부모의 companion object에 직접 접근이 가능하게 되는 순간입니다. 그도 그럴 것이 `fun method3() = Companion.prop`에서 Companion.prop를 하면 이때 `Companion`은 자식 것이 아닙니다. 왜냐하면 자식은 `ChildCompanion`로 이름을 바꿨으니깐요. 그래서 여기서  `Companion`은 부모가 됩니다.
-
-아래 코드에서는 부모의 companion object마저 이름을 붙여봅니다.
-
-```kotlin
-open class Parent{
-    companion object ParentCompanion{ // -- (1) ParentCompanion로 이름을 부여했어요.
-        val prop = "나는 부모"
-    }
-    fun method0() = prop
-}
-class Child:Parent(){
-    companion object ChildCompanion{
-        val prop = "나는 자식"
-    }
-    fun method1() = prop
-    fun method2() = ChildCompanion.prop
-    fun method3() = Companion.prop // -- (2) Unresolved reference: Companion 에러!!
-}
-```
-
-위 코드에서 주석(1)을 보시면 부모 companion object의 이름을 ParentCompanion로 했습니다. 그러자마자 주석(2) 부분은 컴파일 에러가 납니다. 에러가 안 날려면 `fun method3() = Companion.prop`이 아닌 `fun method3() = ParentCompanion.prop` 바꿔야 합니다.
-
-이 실험을 통해 우리는 부모와 자식의 companion object에 이름을 붙이지 않으면 부모의 companion object는 자식 입장에서 섀도잉(shadowing) 되어 감춰질 뿐임을 우리는 알 수 있었습니다.
 
 
-## 정리하며 
+## 정리하며
 조금 코틀린 companion object에 대해서 이해가 되셨나요? 자바의 static과는 다르며 더 많은 일을 할 수 있다는 것도 느껴지시나요? 하지만 이제 맛보기만 했을 뿐입니다. companion object에 대해서 더 학습이 필요하지만, 글이 많이 길어지는 관계로 이 정도로 마무리 짓고 다음에 2번째 글을 올리도록 하겠습니다. 긴 글 읽어주셔서 감사하며, 부족한 점 있거나 잘못된 내용이 있다면 메일 부탁드리겠습니다.
 
 
