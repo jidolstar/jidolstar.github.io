@@ -19,6 +19,9 @@ hidden: false
 
 
 
+
+
+
 ## Companion Object를 진정으로 활용해보자. 
 
 코틀린이 static을 버리고 Companion Object를 쓴다는 점에서 발견할 수 있는 장점은 무엇이 있을까요? 위에서 언급한 특징만으로 코틀린이 정말 매력적인 언어라는 것을 알기는 힘들지 모릅니다. static보다 장점이라기 보다 static 역할을 하면서 companion object 객체를 대신해서 쓴다는 점 외에는 나아 보일 것이 없어 보일 수 있습니다. 
