@@ -31,7 +31,7 @@ class OuterClass{
 ```kotlin
 class OuterClass{
 	//내부클래스
-	inner class NestedClass
+	inner class InnerClass
 }
 ```
 
@@ -60,8 +60,12 @@ class OuterClass1{
         private val n1 = 10
         private val n2 = 20
         fun method1() = n1 + n2
-        fun method2() = o1 + n1 //Unresolved reference: o1
-        fun method3() = o2 + n1 //Unresolved reference: o2
+
+        //Unresolved reference: o1
+        fun method2() = o1 + n1
+
+		//Unresolved reference: o2
+        fun method3() = o2 + n1
     }
 }
 ```
@@ -92,10 +96,12 @@ fun main() {
     println("i1.method1() = ${i1.method1()}") //결과 30
 
     //내부클래스 인스턴스 생성. 실패!
-    val i2 = OuterClass2.InnerClass() //Constructor of inner class InnerClass can be called only with receiver of containing class
-    
+    //Constructor of inner class InnerClass 
+    //can be called only with receiver of containing class
+    val i2 = OuterClass2.InnerClass()
+
     //내부클래스 인스턴스 생성함
-    val i3 = OuterClsss2().InnerClass() 
+    val i3 = OuterClsss2().InnerClass()
 }
 ```
 
@@ -122,12 +128,20 @@ class OuterClass2{
 ```kotlin
 fun main() {
     val i1 = OuterClass1.NestedClass()
-    println("i1.method1() = ${i1.method1()}") //결과 30
+
+	//결과 30
+    println("i1.method1() = ${i1.method1()}")
 
     val i2 = OuterClass2()
-    println("i1.method1() = ${i2.inner.method1()}") //결과 30
-    println("i1.method2() = ${i2.inner.method2()}") //결과 11
-    println("i1.method3() = ${i2.inner.method3()}") //결과 12
+
+    //결과 30
+    println("i1.method1() = ${i2.inner.method1()}")
+
+    //결과 11
+    println("i1.method2() = ${i2.inner.method2()}")
+
+	//결과 12
+    println("i1.method3() = ${i2.inner.method3()}")
 }
 ```
 
@@ -150,11 +164,17 @@ class OuterClass{
         val a = 1
     }
     fun method1() = NestedClass().a
-    fun method2() = NestedClass() //에러 : 'public' function exposes its 'private' return type NestedClass
+
+    //에러 : 'public' function exposes
+    //       its 'private' return type NestedClass
+    fun method2() = NestedClass()
 }
 fun main(args: Array<String>) {
-    println(OuterClass.NestedClass) //에러 : Cannot access 'NestedClass': it is private in 'OuterClass'
-    println(OuterClass().method1()) //1
+	//에러 : Cannot access 'NestedClass': it is private in 'OuterClass'
+    println(OuterClass.NestedClass)
+
+    //결과 : 1
+    println(OuterClass().method1())
 }
 ```
 
@@ -169,13 +189,16 @@ class OuterClass{
         val a = 1
     }
     fun method1() = InnerClass().a
-    fun method2() = InnerClass() //에러 : 'public' function exposes its 'private' return type NestedClass
+
+    //에러 : 'public' function exposes
+    //       its 'private' return type NestedClass
+    fun method2() = InnerClass()
 }
 ```
 
 내부 클래스도 private 접근제한자를 쓰면 중첩클래스와 동일하게 내부클래스의 인스턴스를 외부에 공개되지 않게 됩니다. 내부클래스는 private 접근제한자를 쓰는게 메모리 관리 측면에서 더욱 안전할 수 있습니다. 
 
-하지만 내부클래스에 특성을 조금 더 생각해보면 private 접근제한자를 붙힌 내부클래스는 효용가치가 많이 떨어집니다. 이유를 간단하게 살펴봅니다. 
+하지만 내부클래스에 특성을 조금 더 생각해보면 private 접근제한자를 붙힌 내부클래스는 효용가치가 많이 떨어집니다. 이유를 간단하게 살펴봅니다.
 
 
 ```kotlin
@@ -199,15 +222,21 @@ class MySQL{
 class OuterClass{
     class NestedClass{
         companion object{
-            fun method() = "나는 중첩 클래스의 Companion object의 메소드다."
+            fun method() = 
+             "나는 중첩 클래스의 Companion object의 메소드다."
         }
     }
     fun method() = NestedClass.Companion.method()
 }
 fun main(args: Array<String>) {
-    println(OuterClass().method()) //나는 중첩 클래스의 Companion object의 메소드다.
-    println(OuterClass.NestedClass.method()) //나는 중첩 클래스의 Companion object의 메소드다.
-    println(OuterClass.NestedClass.Companion.method()) //나는 중첩 클래스의 Companion object의 메소드다.
+	//나는 중첩 클래스의 Companion object의 메소드다.
+    println(OuterClass().method())
+
+    //나는 중첩 클래스의 Companion object의 메소드다.
+    println(OuterClass.NestedClass.method())
+
+    //나는 중첩 클래스의 Companion object의 메소드다.
+    println(OuterClass.NestedClass.Companion.method())
 }
 ```
 
@@ -233,8 +262,12 @@ class OuterClass{
             fun getA1() = a
             fun getA2() = OuterClass.a
             fun getA3() = OuterClass.Companion.a
-            //fun getB() = b  // 에러 : Unresolved reference: b
-            //fun getC() = c  // 에러 : Unresolved reference: c
+
+			// 에러 : Unresolved reference: b
+            fun getB() = b
+            // 에러 : Unresolved reference: c
+            fun getC() = c
+
             fun getD1() = d
             fun getD2() = OuterClass.d
             fun getD3() = OuterClass.Companion.d
@@ -242,7 +275,10 @@ class OuterClass{
         fun getA1() = a
         fun getA2() = OuterClass.a
         fun getA3() = OuterClass.Companion.a
-        //fun getB() = b // 에러 : Unresolved reference: b
+
+        // 에러 : Unresolved reference: b
+        fun getB() = b
+
         fun getC() = c
         fun getD1() = d
         fun getD2() = OuterClass.d
@@ -250,12 +286,23 @@ class OuterClass{
     }
 }
 fun main(args: Array<String>) {
-    println(OuterClass.NestedClass.getA1()) // -- (1)
-    println(OuterClass.NestedClass.getA2()) // -- (2)
-    println(OuterClass.NestedClass.getA3()) // -- (3)
-    println(OuterClass.NestedClass.getD1()) // -- (4)
-    println(OuterClass.NestedClass.getD2()) // -- (5)
-    println(OuterClass.NestedClass.getD3()) // -- (6)
+	// -- (1)
+    println(OuterClass.NestedClass.getA1())
+
+    // -- (2)
+    println(OuterClass.NestedClass.getA2())
+
+    // -- (3)
+    println(OuterClass.NestedClass.getA3())
+
+    // -- (4)
+    println(OuterClass.NestedClass.getD1())
+
+    // -- (5)
+    println(OuterClass.NestedClass.getD2())
+
+    // -- (6)
+    println(OuterClass.NestedClass.getD3())
 
     val i = OuterClass.NestedClass()
     println(i.getA1()) // -- (7)
@@ -285,8 +332,10 @@ main() 함수에 보면 주석 (2), (3) 의 결과는 1임을 금방 알 수 있
 ```kotlin
 class OuterClass{
     inner class InnerClass{
-        companion object{  // 에러 발생 - Companion object is not allowed here
-            fun method() = "앗! 난 존재할 수 없었다! 내부 클래스에 Companion object는 있을 수 없다!"
+    	// 에러 발생 - Companion object is not allowed here
+        companion object{
+            fun method() = 
+            	"앗! 난 존재할 수 없었다! 내부 클래스에 Companion object는 있을 수 없다!"
         }
     }
 }
@@ -318,10 +367,10 @@ class OuterClass{
     inner class InnerClass{
         private val c = 300
         private val d = 400
-        fun getA() = a // -- (1)
-        fun getB() = b // -- (2)
-        fun getC() = c // -- (3)
-        fun getD() = d // -- (4)
+        fun getA() = a //--(1)
+        fun getB() = b //--(2)
+        fun getC() = c //--(3)
+        fun getD() = d //--(4)
     }
     fun print() {
         val inner = InnerClass()
@@ -332,7 +381,9 @@ class OuterClass{
     }
 }
 fun main(args: Array<String>) {
-    //val inner = OuterClass.InnerClass() //에러! 내부클래스는 외부에서 생성 불가!
+	//에러! 내부클래스는 외부에서 생성 불가!
+    val inner = OuterClass.InnerClass()
+
     OuterClass().print()
 }
 ```
@@ -367,14 +418,30 @@ class OuterClass{
     inner class InnerClass{
         private val c = 300
         private val d = 400
-        fun getA() = a // -- (1)
-        fun getB() = b // -- (2)
-        fun getC() = this.c // -- (3)
-        fun getD() = this.d // -- (4)
-        fun getOuterB() = this@OuterClass.b // -- (5)
-        fun getOuterD() = this@OuterClass.d // -- (6)
-        fun getOuterCompA() = OuterClass.a // -- (7)
-        fun getOuterCompC() = OuterClass.c // -- (8)
+
+		// -- (1)
+        fun getA() = a
+
+        // -- (2)
+        fun getB() = b
+
+        // -- (3)
+        fun getC() = this.c
+
+        // -- (4)
+        fun getD() = this.d
+
+        // -- (5)
+        fun getOuterB() = this@OuterClass.b
+
+        // -- (6)
+        fun getOuterD() = this@OuterClass.d
+
+        // -- (7)
+        fun getOuterCompA() = OuterClass.a
+
+        // -- (8)
+        fun getOuterCompC() = OuterClass.c
     }
     fun print() {
         val inner = InnerClass()
